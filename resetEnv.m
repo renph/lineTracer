@@ -19,7 +19,5 @@ posX = 0;
 posY = -1;
 th =0;%小车航向角 以x轴为正向,单位rad
 updatePos(0,0,0);% 计算传感器的位置
-getLight();% 传感器初始化
-
 
 end

@@ -1,7 +1,7 @@
 function  animCar(nRec)
 global posX posY th sensorX sensorY
 global wheelD wheelW wheelDis
-global mpx mpy
+global mpx mpy AxesH Fig
 
 body=rectCord(posX, posY, th,wheelDis,1.4*wheelD);
 wheelL = rectCord(posX + wheelDis/2*sin(th), posY-wheelDis/2*cos(th) , th,wheelW,wheelD);
@@ -36,8 +36,7 @@ posDisp();
 drawCar(body, wheelL ,wheelR);
 drawSensor(sensorX,sensorY);
 drawTrace(sensorX,sensorY);
-drawnow
-% pause(0.01)
+drawnow limitrate
 end
 
 function  posDisp(AxesH)
@@ -99,21 +98,12 @@ set(sensorH,'XData',sensorX+c,'YData',sensorY+s);
 end
 
 function  drawTrace(sensorX,sensorY,AxesH,nrec)
-persistent trace nRec traceH idx
+persistent  traceH 
 
 if nargin>2
-    nRec = int32(nrec);% 仅记录110点的轨迹
-    trace=zeros(2,nRec);
-    idx = 1;% 记录轨迹点数
-    traceH = line(AxesH,sensorX,sensorY);
-    
+    traceH = animatedline(AxesH,'Color',[0 0 1],'MaximumNumPoints',nrec);
 end
 
-trace(:,idx)=[sensorX;sensorY];
-set(traceH,'xdata',trace(1,1:idx),'ydata',trace(2,1:idx));
-idx = idx + 1;
-if mod(idx,nRec) == 0
-    idx=1;
-end
+addpoints(traceH,sensorX,sensorY);
 
 end
