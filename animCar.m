@@ -28,7 +28,7 @@ if nargin > 0
     drawSensor(sensorX,sensorY,AxesH);
     drawTrace(sensorX,sensorY,AxesH,nRec);
     posDisp(AxesH);
-    drawnow
+    drawnow limitrate
     return
 end
 
@@ -36,7 +36,8 @@ posDisp();
 drawCar(body, wheelL ,wheelR);
 drawSensor(sensorX,sensorY);
 drawTrace(sensorX,sensorY);
-drawnow limitrate
+% drawnow
+drawnow limitrate % 20 FPS
 end
 
 function  posDisp(AxesH)

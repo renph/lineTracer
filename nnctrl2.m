@@ -3,11 +3,11 @@ function [ vL,vR ] = nnctrl2( err )
 
 persistent err1
 if nargin<1
-    err1 =0;
+    err1 = 0;
     return
 end
 
-nnOut=nnAppr([err; err1]);
+nnOut=nnEnd2End([err; err1]);
 
 vL=nnOut(1);
 vR=nnOut(2);

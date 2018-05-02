@@ -13,7 +13,7 @@ if ischar(err)
             ctrlFun = @fuzzyctrl;
             fuzzyctrl();
         case 'nn'
-            ctrlFun = @nnctrl2;
+            ctrlFun = @nnctrl;
             ctrlFun();
         otherwise
             error('control method can only be one of bangbang, pid, fuzzy, nn');

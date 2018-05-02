@@ -1,17 +1,23 @@
-% network training
+% training End to End network 
 
 clc;clear
-du = @(err,err1) 0.75 * err + 0.375 * (err - err1);
 
-datalength = 300;
-% generate random training data ranging from -20 to 20
-x = rand(2,datalength)*40-20;
-t =  du(x(1,:),x(2,:));
+datalength = 1000;
+% generate random error data ranging from -20 to 20
+x = rand(1,datalength)*40-20;
+x(2,2:end) = x(1:end-1);
+t = zeros(2,datalength);
+% gather target data by call function pidctrl
+pidctrl();% initialize before called
+for ii = 1:datalength
+    [vL,vR] = pidctrl(x(1,ii));
+    t(:,ii) = [vL;vR];
+end
 
 % Create a Fitting Network
-hiddenLayerSize = [10];
+hiddenLayerSize = [20 15];
 net = fitnet(hiddenLayerSize);
-net.layers{1}.transferFcn='purelin';
+net.layers{1}.transferFcn='poslin';
 % net.layers{2}.transferFcn='poslin';
 
 % Choose Input and Output Pre/Post-Processing Functions
@@ -41,9 +47,9 @@ net.plotFcns = {'plotperform','plottrainstate','ploterrhist', ...
 % 'trainlm' is usually fastest.
 % 'trainbr' takes longer but may be better for challenging problems.
 % 'trainscg' uses less memory. Suitable in low memory situations.
-net.trainFcn = 'trainlm';
-net.trainParam.max_fail = 0.1*datalength;
-net.trainParam.epochs = 5000;
+net.trainFcn = 'traingda';
+net.trainParam.max_fail = datalength*0.05;
+net.trainParam.epochs = 50000;
 net.trainParam.goal = 1e-5;
 net.trainParam.min_grad = 1e-6;
 
@@ -79,9 +85,7 @@ testPerformance = perform(net,testTargets,y)
 if (testPerformance < 0.02)
     % Generate a matrix-only MATLAB function for neural network code
     % generation with MATLAB Coder tools.
-    genFunction(net,'nnPID','MatrixOnly','yes');
+    genFunction(net,'nnEnd2End','MatrixOnly','yes');
 
 end
 
-% save('net')
-% disp('net saved in net.mat')

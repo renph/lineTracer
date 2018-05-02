@@ -1,4 +1,5 @@
 test.c
+*.mexw64
 main.cpp
 CMakeLists.txt
 .idea

@@ -1,4 +1,7 @@
 function fisSetup(fisname)
+if nargin<1
+    fisname='agv';
+end
 a=newfis(fisname,'sugeno');
 % 当前误差
 a=addvar(a,'input','e',[-20,20]);            %Parameter e
@@ -15,7 +18,7 @@ a=addmf(a,'input',2,'Z','trimf',[-5,0,5]);
 a=addmf(a,'input',2,'PS','trimf',[0,5,10]);
 a=addmf(a,'input',2,'PB','smf',[8,20]);
 % 输出两轮差速
-a=addvar(a,'output','u',[-25,25]);          %Parameter u
+a=addvar(a,'output','u',[-30,30]);          %Parameter u
 a=addmf(a,'output',1,'NB','linear',[0.85 -0.2 0]);
 a=addmf(a,'output',1,'NS','linear',[0.6 0.375 0]);
 a=addmf(a,'output',1,'Z','linear',[0.85 0.375 0]);
